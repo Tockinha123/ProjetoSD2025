@@ -72,6 +72,20 @@ Com o RabbitMQ rodando, execute o JAR:
 ```
 java -jar target/ProjetoSD2025-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
+
+Você pode configurar o RabbitMQ por variáveis de ambiente:
+
+```
+RABBIT_HOST=localhost RABBIT_PORT=5672 RABBIT_USER=guest RABBIT_PASS=guest \
+  java -jar target/ProjetoSD2025-1.0-SNAPSHOT-jar-with-dependencies.jar
+```
+
+Ou por argumentos (prioridade sobre env vars):
+
+```
+java -jar target/ProjetoSD2025-1.0-SNAPSHOT-jar-with-dependencies.jar \
+  --rabbit-host=localhost --rabbit-port=5672 --rabbit-user=guest --rabbit-pass=guest
+```
 Ao iniciar, o app abrirá uma UI no terminal e perguntará o seu nome de usuário.
 
 Dica: você também pode rodar via IDE (IntelliJ IDEA) executando a classe `br.com.tocka.App`.

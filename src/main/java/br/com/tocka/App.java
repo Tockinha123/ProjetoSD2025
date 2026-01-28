@@ -19,6 +19,21 @@ public class App {
         Screen screen = null;
         ConnectionManager connectionManager = null;
 
+        Config config = Config.fromArgs(args);
+
+        if (config.hasFlag("help")) {
+            System.out.println("ProjetoSD2025 — Chat TUI via RabbitMQ\n");
+            System.out.println("Uso:");
+            System.out.println("  java -jar target/ProjetoSD2025-1.0-SNAPSHOT-jar-with-dependencies.jar [opções]\n");
+            System.out.println("Opções (args têm prioridade sobre env vars):");
+            System.out.println("  --rabbit-host <host>   (env: RABBIT_HOST, default: localhost)");
+            System.out.println("  --rabbit-port <port>   (env: RABBIT_PORT, default: 5672)");
+            System.out.println("  --rabbit-user <user>   (env: RABBIT_USER, default: guest)");
+            System.out.println("  --rabbit-pass <pass>   (env: RABBIT_PASS, default: guest)");
+            System.out.println("  --help, -h             Mostra esta ajuda e sai\n");
+            return;
+        }
+
         try {
             terminal = new DefaultTerminalFactory().createTerminal();
             screen = new TerminalScreen(terminal);
@@ -28,11 +43,16 @@ public class App {
 
             String username = UsernameModal.showDialog(gui);
 
+                String rabbitHost = config.get("rabbit-host", "RABBIT_HOST", "localhost");
+                int rabbitPort = config.getInt("rabbit-port", "RABBIT_PORT", 5672);
+                String rabbitUser = config.get("rabbit-user", "RABBIT_USER", "guest");
+                String rabbitPass = config.get("rabbit-pass", "RABBIT_PASS", "guest");
+
             connectionManager = new ConnectionManager(
-                    "localhost",  // Host
-                    5672,         // Porta
-                    "guest",      // Username RabbitMQ
-                    "guest"       // Password RabbitMQ
+                    rabbitHost,
+                    rabbitPort,
+                    rabbitUser,
+                    rabbitPass
             );
 
             connectionManager.connect();

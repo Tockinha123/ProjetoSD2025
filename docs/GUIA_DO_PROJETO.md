@@ -162,6 +162,20 @@ Hoje host/porta/credenciais estão hardcoded em `App`.
 - Melhor lugar: `App` + um pequeno helper `Config`.
 - Exemplos de env vars: `RABBIT_HOST`, `RABBIT_PORT`, `RABBIT_USER`, `RABBIT_PASS`.
 
+Implementado neste projeto:
+
+- Variáveis de ambiente:
+  - `RABBIT_HOST` (default: `localhost`)
+  - `RABBIT_PORT` (default: `5672`)
+  - `RABBIT_USER` (default: `guest`)
+  - `RABBIT_PASS` (default: `guest`)
+- Argumentos (têm prioridade sobre env vars):
+  - `--rabbit-host=<host>` (ou `--rabbit-host <host>`)
+  - `--rabbit-port=<port>` (ou `--rabbit-port <port>`)
+  - `--rabbit-user=<user>` (ou `--rabbit-user <user>`)
+  - `--rabbit-pass=<pass>` (ou `--rabbit-pass <pass>`)
+  - `--help` (ou `-h`) para mostrar ajuda
+
 ## 6) Como rodar (checklist rápido)
 
 1. Suba RabbitMQ:
