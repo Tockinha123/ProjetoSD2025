@@ -103,6 +103,15 @@ Isso funciona, mas é um ponto clássico para evoluir para **JSON** (ex.: `{type
 - `src/main/java/br/com/tocka/rabbitmq/Receiver.java`
   - Consome a fila do usuário e entrega mensagens via callback
 
+### 4.6 Protocol Buffers (Protobuf)
+
+- Arquivos `.proto` ficam em `src/main/proto/`
+  - Exemplo: `src/main/proto/chat_message.proto`
+- O Maven gera classes Java automaticamente em build/test.
+  - Você pode validar com `mvn test` (existe um teste simples de serialização em `ProtoGenerationTest`).
+
+Observação: o projeto ainda usa **texto** para trafegar mensagens no RabbitMQ; o Protobuf foi adicionado para você evoluir o “wire format” quando quiser.
+
 ## 5) Onde colocar novas funcionalidades (pontos de extensão)
 
 Abaixo estão os “lugares naturais” para evoluir sem bagunçar responsabilidades.
