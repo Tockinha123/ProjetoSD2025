@@ -91,11 +91,19 @@ As mensagens devem aparecer nos respectivos painéis de mensagens e notificaçõ
   - Notificações: feedbacks como “mensagem enviada”, “mensagem recebida”, erros, etc.
 - Prompt: exibe `@destinatario<< ` quando o destinatário está definido; caso contrário, `<< `.
 
+## Documentação extra
+
+Além deste README, existe um guia mais detalhado (arquitetura + pontos de extensão):
+
+- `docs/GUIA_DO_PROJETO.md`
+
 ## Estrutura do projeto
 ```
-/home/tocka/IdeaProjects/ProjetoSD2025
+.
 ├── docker-compose.yml                 # Sobe RabbitMQ (broker + UI de gestão)
 ├── pom.xml                            # Build Maven e dependências
+├── docs
+│   └── GUIA_DO_PROJETO.md             # Como funciona + onde evoluir
 ├── src
 │   └── main
 │       └── java

@@ -40,7 +40,7 @@ public class ConnectionManager {
 
         if (connection != null && connection.isOpen()) {
             connection.close();
-            System.out.println("Conexão fechada");
+            //System.out.println("Conexão fechada");
         }
     }
 }

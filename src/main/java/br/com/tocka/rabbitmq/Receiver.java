@@ -29,11 +29,11 @@ public class Receiver {
     private void setupQueue() throws IOException {
         channel.queueDeclare(queueName, true, false, false, null);
 
-        System.out.println("Aguardando mensagens na fila: " + queueName);
+        //System.out.println("Aguardando mensagens na fila: " + queueName);
 
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
             String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
-            System.out.println(" [x] Recebido: '" + message + "'");
+            //System.out.println(" [x] Recebido: '" + message + "'");
 
             String sender = extractSender(message);
 
@@ -41,7 +41,7 @@ public class Receiver {
                 callback.onMessageReceived(sender, message);
             }
 
-            System.out.println(" [x] Processado");
+            //System.out.println(" [x] Processado");
         };
 
         channel.basicConsume(queueName, true, deliverCallback, consumerTag -> {});
