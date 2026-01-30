@@ -44,6 +44,14 @@ public class Sender {
             );
     }
 
+    public Channel getChannel() {
+        return channel;
+    }
+
+    public Connection getConnection() {
+        return connection;
+    }
+
     public void close() throws IOException, TimeoutException {
 
             if (channel != null && channel.isOpen()) {
@@ -55,3 +63,4 @@ public class Sender {
         return groupMenager;
     }
 }
+

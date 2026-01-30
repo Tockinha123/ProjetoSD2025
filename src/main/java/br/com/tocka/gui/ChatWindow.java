@@ -1,6 +1,7 @@
 package br.com.tocka.gui;
 
 import br.com.tocka.controller.ChatController;
+import br.com.tocka.rabbitmq.FileTransferManager;
 import br.com.tocka.rabbitmq.Sender;
 import br.com.tocka.rabbitmq.Receiver;
 import com.googlecode.lanterna.TerminalSize;
@@ -67,6 +68,7 @@ public class ChatWindow {
 
         Sender messageSender = null;
         Receiver messageReceiver = null;
+        FileTransferManager fileTransferManager = null;
 
         try {
             messageSender = new Sender(rabbitConnection);
@@ -76,6 +78,30 @@ public class ChatWindow {
             messageReceiver = new Receiver(rabbitConnection, username, (senderName, content, timestamp) -> {
                 gui.getGUIThread().invokeLater(() -> {
                     controller.receiveMessage(senderName, content, timestamp);
+                });
+            });
+
+            fileTransferManager = new FileTransferManager(rabbitConnection, username, new FileTransferManager.FileCallback() {
+                @Override
+                public void onFileReceived(String sender, String fileName, java.time.LocalDateTime timestamp) {
+                    gui.getGUIThread().invokeLater(() -> {
+                        controller.receiveFile(sender, fileName, timestamp);
+                    });
+                }
+
+                @Override
+                public void onFileSent(String receiver, String fileName) {
+                    gui.getGUIThread().invokeLater(() -> {
+                        controller.fileSent(receiver, fileName);
+                    });
+                }
+            });
+
+            controller.setFileTransferManager(fileTransferManager);
+            controller.setMessageReceiver(messageReceiver);
+            messageReceiver.setFileCallback((sender, fileName, timestamp) -> {
+                gui.getGUIThread().invokeLater(() -> {
+                    controller.receiveFile(sender, fileName, timestamp);
                 });
             });
 
@@ -116,6 +142,9 @@ public class ChatWindow {
                 }
                 if (messageReceiver != null) {
                     messageReceiver.close();
+                }
+                if (fileTransferManager != null) {
+                    fileTransferManager.close();
                 }
             } catch (Exception e) {
                 e.printStackTrace();

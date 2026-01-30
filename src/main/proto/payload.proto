@@ -22,4 +22,5 @@ message Content {
   string type       = 1;
   bytes body        = 2;
   string name       = 3;
+  string mimeType   = 4;
 }
