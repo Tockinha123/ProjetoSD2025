@@ -3,11 +3,18 @@ package br.com.tocka.model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import com.google.protobuf.ByteString;
+
+import br.com.tocka.payload.PayloadProto;
+import br.com.tocka.payload.PayloadProto.Content;
+import br.com.tocka.payload.PayloadProto.PayloadRequest;
+
 public class ChatMessage {
     private String producer;
     private String consumer;
     private String content;
     private LocalDateTime timestamp;
+    private PayloadRequest payload;
 
     // Construtor
     public ChatMessage(String producer, String consumer, String content) {
@@ -15,6 +22,18 @@ public class ChatMessage {
         this.consumer = consumer;
         this.content = content;
         this.timestamp = LocalDateTime.now();
+        this.payload = PayloadRequest
+                                    .newBuilder()
+                                    .setEmmitter(producer)
+                                    .setReceiver(consumer)
+                                    .setContent(
+                                        Content
+                                            .newBuilder()
+                                            .setName("null")
+                                            .setBody(ByteString.copyFrom(content.getBytes()))
+                                            .build()
+                                    )
+                                    .build();
     }
 
     // Getters
@@ -39,6 +58,10 @@ public class ChatMessage {
         return timestamp.format(formatter);
     }
 
+    public byte[] getReadyPayload(){
+        return this.payload.toByteArray();
+    }
+
     // Setters
     public void setProducer(String producer) {
         this.producer = producer;
@@ -55,4 +78,6 @@ public class ChatMessage {
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
+
+
 }

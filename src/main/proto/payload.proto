@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+
+package payload;
+
+option java_package = "br.com.tocka.payload";
+option java_outer_classname = "PayloadProto";
+
+
+message PayloadRequest {
+  string emmitter   = 1;
+  string receiver   = 2;
+  string date       = 3;
+  string group      = 4;
+  bool is_group     = 6;
+
+  Content content   = 5;
+
+}
+
+message Content {
+  string type       = 1;
+  bytes body        = 2;
+  string name       = 3;
+}

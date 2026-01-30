@@ -1,6 +1,9 @@
 package br.com.tocka.rabbitmq;
 
+import com.google.protobuf.ByteString;
 import com.rabbitmq.client.*;
+
+import br.com.tocka.payload.PayloadProto;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -32,10 +35,12 @@ public class Receiver {
         //System.out.println("Aguardando mensagens na fila: " + queueName);
 
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
-            String message = new String(delivery.getBody(), StandardCharsets.UTF_8);
+            PayloadProto.PayloadRequest payload = PayloadProto.PayloadRequest.parseFrom(delivery.getBody()); 
+            //String message = new String (payload.getContent().getBody().toByteArray());
+            String message = new String (payload.getContent().getBody().toByteArray());
             //System.out.println(" [x] Recebido: '" + message + "'");
 
-            String sender = extractSender(message);
+            String sender = payload.getEmmitter();
 
             if (callback != null) {
                 callback.onMessageReceived(sender, message);
