@@ -15,6 +15,7 @@ public class ChatMessage {
     private String content;
     private LocalDateTime timestamp;
     private PayloadRequest payload;
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
 
     // Construtor
     public ChatMessage(String producer, String consumer, String content) {
@@ -26,6 +27,7 @@ public class ChatMessage {
                                     .newBuilder()
                                     .setEmmitter(producer)
                                     .setReceiver(consumer)
+                                    .setDate(timestamp.format(formatter))
                                     .setContent(
                                         Content
                                             .newBuilder()
@@ -54,8 +56,7 @@ public class ChatMessage {
     }
 
     public String getFormattedTime() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
-        return timestamp.format(formatter);
+        return this.timestamp.format(formatter);
     }
 
     public byte[] getReadyPayload(){

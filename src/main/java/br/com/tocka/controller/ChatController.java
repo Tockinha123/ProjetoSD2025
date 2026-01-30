@@ -92,8 +92,17 @@ public class ChatController {
     }
 
     private void sendMessage(String content) {
-        String formattedMessage = ((currentRecipient.startsWith("#")) ? "" : "@") + username + ((currentRecipient.startsWith("#")) ? currentTarget + "#" : "")  + " diz: " + content;
+        String formattedMessage = new String("");
+        
+        if (currentRecipient.startsWith("#")){
+            formattedMessage = username + "#" + currentTarget;
+        }
+        else if (currentRecipient.startsWith("@")){
+            formattedMessage = "@" + currentTarget;
+        }
 
+        formattedMessage += " diz: " + content;
+        
         ChatMessage message = new ChatMessage(username, currentTarget, formattedMessage);
 
         conversations.computeIfAbsent(currentTarget, k -> new ArrayList<>()).add(message);
