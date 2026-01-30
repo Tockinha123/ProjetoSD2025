@@ -127,6 +127,44 @@ public class ChatController {
                 }
             }
 
+            else if ((index = input.indexOf("listUsers", 0)) != -1){
+                List<String> splitted = new ArrayList<>(Arrays.asList(input.split(" ")));
+
+                if (splitted.size() != 2){
+                    addToNotifications("Uso: !listUsers <grupo>");
+                    return;
+                }
+
+                String groupName = splitted.get(1);
+                try {
+                    List<String> users = messageSender.getGroupMenager().listUsersInGroup(groupName);
+                    if (users.isEmpty()) {
+                        addToNotifications("Nenhum usuário no grupo: " + groupName);
+                    } else {
+                        String usersList = String.join(", ", users);
+                        addToNotifications("Usuários em " + groupName + ": " + usersList);
+                    }
+                } catch (IOException e) {
+                    addToNotifications("Erro ao listar usuários: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+
+            else if ((index = input.indexOf("listGroups", 0)) != -1){
+                try {
+                    List<String> groups = messageSender.getGroupMenager().listGroupsForUser(username);
+                    if (groups.isEmpty()) {
+                        addToNotifications("Você não está em nenhum grupo");
+                    } else {
+                        String groupsList = String.join(", ", groups);
+                        addToNotifications("Seus grupos: " + groupsList);
+                    }
+                } catch (IOException e) {
+                    addToNotifications("Erro ao listar grupos: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+
             else if ((index = input.indexOf("upload", 0)) != -1){
                 String filePath = input.substring(index + 6).trim();
                 if (filePath.isEmpty()){

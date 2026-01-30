@@ -58,7 +58,7 @@ public class App {
             connectionManager.connect();
 
             TerminalSize terminalSize = screen.getTerminalSize();
-            ChatWindow.showChatWindow(gui, terminalSize, username, connectionManager.getConnection());
+            ChatWindow.showChatWindow(gui, terminalSize, username, connectionManager.getConnection(), rabbitHost, 15672, rabbitUser, rabbitPass);
 
             connectionManager.close();
             screen.stopScreen();

@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 public class ChatWindow {
 
-    public static void showChatWindow(MultiWindowTextGUI gui, TerminalSize terminalSize, String username, Connection rabbitConnection) {
+    public static void showChatWindow(MultiWindowTextGUI gui, TerminalSize terminalSize, String username, Connection rabbitConnection, String rabbitHost, int managementPort, String rabbitUser, String rabbitPass) {
         int totalWidth = terminalSize.getColumns();
         int notificationsWidth = totalWidth * 30 / 100;
 
@@ -71,7 +71,7 @@ public class ChatWindow {
         FileTransferManager fileTransferManager = null;
 
         try {
-            messageSender = new Sender(rabbitConnection);
+            messageSender = new Sender(rabbitConnection, rabbitHost, managementPort, rabbitUser, rabbitPass);
 
             ChatController controller = new ChatController(username, messagesBox, notificationsBox, messageSender);
 

@@ -15,12 +15,24 @@ public class Sender {
     private Connection connection;
     private Channel channel;
     private GroupMenager groupMenager;
+    private String host;
+    private int managementPort;
+    private String username;
+    private String password;
 
-    public Sender(Connection connection) throws IOException {
+    public Sender(Connection connection, String host, int managementPort, String username, String password) throws IOException {
         this.connection = connection;
+        this.host = host;
+        this.managementPort = managementPort;
+        this.username = username;
+        this.password = password;
         this.channel = connection.createChannel();
 
         this.groupMenager = new GroupMenager(this.channel);
+        
+        // Inicializar o API Client para o GroupManager
+        RabbitMQAPIClient apiClient = new RabbitMQAPIClient(host, managementPort, username, password);
+        this.groupMenager.setAPIClient(apiClient);
     }
 
     public void sendMessageToGroup(String groupName, ChatMessage message) throws IOException {
@@ -63,4 +75,3 @@ public class Sender {
         return groupMenager;
     }
 }
-
