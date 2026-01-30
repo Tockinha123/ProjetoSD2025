@@ -46,7 +46,10 @@ public class Sender {
     }
 
     public void sendMessage(String recipientQueue, ChatMessage message) throws IOException {
-            channel.queueDeclare(recipientQueue, true, false, false, null);
+            java.util.Map<String, Object> args = new java.util.HashMap<>();
+            args.put("x-queue-type", "quorum");
+            args.put("x-quorum-initial-group-size", 3);
+            channel.queueDeclare(recipientQueue, true, false, false, args);
 
             channel.basicPublish(
                     "",

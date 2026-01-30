@@ -54,7 +54,10 @@ public class FileTransferManager {
 
     private void setupFileQueue() throws IOException {
         String fileQueueName = username + "_files";
-        channel.queueDeclare(fileQueueName, true, false, false, null);
+        java.util.Map<String, Object> args = new java.util.HashMap<>();
+        args.put("x-queue-type", "quorum");
+        args.put("x-quorum-initial-group-size", 3);
+        channel.queueDeclare(fileQueueName, true, false, false, args);
 
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
             try {
@@ -115,7 +118,10 @@ public class FileTransferManager {
 
                 // Enviar para fila de arquivos do receptor
                 String fileQueueName = recipientUsername + "_files";
-                fileChannel.queueDeclare(fileQueueName, true, false, false, null);
+                java.util.Map<String, Object> args = new java.util.HashMap<>();
+                args.put("x-queue-type", "quorum");
+                args.put("x-quorum-initial-group-size", 3);
+                fileChannel.queueDeclare(fileQueueName, true, false, false, args);
 
                 fileChannel.basicPublish(
                         "",

@@ -58,7 +58,10 @@ public class Receiver {
         channel.exchangeDeclare(groupFileExchangeName, "fanout", true);
 
         // Declarar fila exclusiva para esse usuário nesse grupo
-        channel.queueDeclare(groupFileQueueName, true, false, false, null);
+        java.util.Map<String, Object> args = new java.util.HashMap<>();
+        args.put("x-queue-type", "quorum");
+        args.put("x-quorum-initial-group-size", 3);
+        channel.queueDeclare(groupFileQueueName, true, false, false, args);
 
         // Ligar fila ao exchange de arquivos do grupo
         channel.queueBind(groupFileQueueName, groupFileExchangeName, "");
@@ -94,7 +97,10 @@ public class Receiver {
     }
 
     private void setupQueue() throws IOException {
-        channel.queueDeclare(queueName, true, false, false, null);
+        java.util.Map<String, Object> args = new java.util.HashMap<>();
+        args.put("x-queue-type", "quorum");
+        args.put("x-quorum-initial-group-size", 3);
+        channel.queueDeclare(queueName, true, false, false, args);
 
         //System.out.println("Aguardando mensagens na fila: " + queueName);
 
@@ -119,7 +125,10 @@ public class Receiver {
 
     private void setupFileQueue() throws IOException {
         String fileQueueName = queueName + "_files";
-        channel.queueDeclare(fileQueueName, true, false, false, null);
+        java.util.Map<String, Object> args = new java.util.HashMap<>();
+        args.put("x-queue-type", "quorum");
+        args.put("x-quorum-initial-group-size", 3);
+        channel.queueDeclare(fileQueueName, true, false, false, args);
 
         DeliverCallback deliverCallback = (consumerTag, delivery) -> {
             try {

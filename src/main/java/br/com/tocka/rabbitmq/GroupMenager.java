@@ -27,7 +27,10 @@ public class GroupMenager {
     }
 
     public void addNewUser (String username, String groupName) throws IOException{
-        this.channel.queueDeclare(username, true, false, false, null);
+        java.util.Map<String, Object> args = new java.util.HashMap<>();
+        args.put("x-queue-type", "quorum");
+        args.put("x-quorum-initial-group-size", 3);
+        this.channel.queueDeclare(username, true, false, false, args);
         this.channel.queueBind(username, groupName, "");
     }
 
