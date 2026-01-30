@@ -82,6 +82,23 @@ public class ChatController {
                     e.printStackTrace();
                 }
             }
+
+            else if ((index = input.indexOf("removeUser", 0)) != -1){
+                List<String> splitted = new ArrayList<>(Arrays.asList(input.split(" ")));
+
+                if (splitted.size() != 3){
+                    addToNotifications("Comando incorreto!");
+                    return;
+                }
+
+                try {
+                    messageSender.getGroupMenager().removeUserFromGroup(splitted.get(1), splitted.get(2));
+                    addToNotifications("Usuário " + splitted.get(1) + " removido do grupo " + splitted.get(2));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return;
         }
 
         if (currentTarget.isEmpty()) {

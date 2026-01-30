@@ -24,4 +24,8 @@ public class GroupMenager {
         this.channel.queueBind(username, groupName, "");
     }
 
+    public void removeUserFromGroup (String username, String groupName) throws IOException{
+        this.channel.queueUnbind(username, groupName, "");
+    }
+
 }
