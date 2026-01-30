@@ -73,9 +73,9 @@ public class ChatWindow {
 
             ChatController controller = new ChatController(username, messagesBox, notificationsBox, messageSender);
 
-            messageReceiver = new Receiver(rabbitConnection, username, (senderName, content) -> {
+            messageReceiver = new Receiver(rabbitConnection, username, (senderName, content, timestamp) -> {
                 gui.getGUIThread().invokeLater(() -> {
-                    controller.receiveMessage(senderName, content);
+                    controller.receiveMessage(senderName, content, timestamp);
                 });
             });
 

@@ -6,6 +6,7 @@ import com.googlecode.lanterna.gui2.TextBox;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -126,8 +127,8 @@ public class ChatController {
         }
     }
 
-    public void receiveMessage(String sender, String content) {
-        ChatMessage message = new ChatMessage(sender, username, content);
+    public void receiveMessage(String sender, String content, LocalDateTime timestamp) {
+        ChatMessage message = new ChatMessage(sender, username, content, timestamp);
 
         conversations.computeIfAbsent(sender, k -> new ArrayList<>()).add(message);
 

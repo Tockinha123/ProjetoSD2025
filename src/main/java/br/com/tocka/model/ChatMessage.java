@@ -17,12 +17,17 @@ public class ChatMessage {
     private PayloadRequest payload;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
 
-    // Construtor
+    // Construtor padrão
     public ChatMessage(String producer, String consumer, String content) {
+        this(producer, consumer, content, LocalDateTime.now());
+    }
+
+    // Construtor com timestamp customizado
+    public ChatMessage(String producer, String consumer, String content, LocalDateTime timestamp) {
         this.producer = producer;
         this.consumer = consumer;
         this.content = content;
-        this.timestamp = LocalDateTime.now();
+        this.timestamp = timestamp;
         this.payload = PayloadRequest
                                     .newBuilder()
                                     .setEmmitter(producer)

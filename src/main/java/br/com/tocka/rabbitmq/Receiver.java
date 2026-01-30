@@ -3,10 +3,13 @@ package br.com.tocka.rabbitmq;
 import com.google.protobuf.ByteString;
 import com.rabbitmq.client.*;
 
+import br.com.tocka.model.ChatMessage;
 import br.com.tocka.payload.PayloadProto;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeoutException;
 
 public class Receiver {
@@ -17,7 +20,7 @@ public class Receiver {
     private MessageCallback callback;
 
     public interface MessageCallback {
-        void onMessageReceived(String sender, String message);
+        void onMessageReceived(String sender, String message, LocalDateTime timestamp);
     }
 
     public Receiver(Connection connection, String username, MessageCallback callback) throws IOException {
@@ -41,9 +44,10 @@ public class Receiver {
             //System.out.println(" [x] Recebido: '" + message + "'");
 
             String sender = payload.getEmmitter();
+            LocalDateTime timestamp = parseTimestamp(payload.getDate());
 
             if (callback != null) {
-                callback.onMessageReceived(sender, message);
+                callback.onMessageReceived(sender, message, timestamp);
             }
 
             //System.out.println(" [x] Processado");
@@ -60,6 +64,16 @@ public class Receiver {
             }
         }
         return "";
+    }
+
+    private LocalDateTime parseTimestamp(String dateString) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy 'às' HH:mm");
+            return LocalDateTime.parse(dateString, formatter);
+        } catch (Exception e) {
+            // Se houver erro ao parsear, retorna a hora atual
+            return LocalDateTime.now();
+        }
     }
 
     public void close() throws IOException, TimeoutException {
